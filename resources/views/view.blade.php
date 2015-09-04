@@ -29,5 +29,5 @@
         </message>
     @endforeach
     </div>
-    <a href="view?cf" class="btn btn-default pull-right bottom" data-step="3" data-intro="...?????">&pi;</a>
+    <a href="view?cf=yesplz" class="btn btn-default pull-right bottom" data-step="3" data-intro="...?????">&pi;</a>
 @stop

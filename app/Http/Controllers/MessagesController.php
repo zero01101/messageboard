@@ -34,10 +34,8 @@ class MessagesController extends Controller
     {
         $ip = $_SERVER['REMOTE_ADDR'];
         $messages = Message::latest('created_at')->limit(25)->get();
-        if (!empty($_REQUEST)) {
-            $request = new Client([
-                'base_uri' => 'http://catfacts-api.appspot.com/api/facts',
-            ]);
+        if ((!empty($_REQUEST)) && ($_REQUEST['cf'] == 'yesplz')) {
+            $request = new Client();
             $response = $request->get('http://catfacts-api.appspot.com/api/facts?number=1');
             $carfax = json_decode($response->getBody()->read(1000));
             if ($carfax->success == true) {
