@@ -10,8 +10,6 @@ use App\Http\Controllers\Controller;
 
 class MessagesController extends Controller
 {
-    private $_catFacts;
-
     public function postMessage()
     {
         $messages = Message::latest('created_at')->limit(5)->get();
