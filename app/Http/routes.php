@@ -19,5 +19,3 @@ Route::get('post', 'MessagesController@postMessage');
 
 Route::post('post', 'MessagesController@processPostMessage');
 
-//Route::get('view/{catfact}', 'MessagesController@showMessages');
-
