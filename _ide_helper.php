@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.1.12 (LTS) on 2015-09-02.
+ * Generated for Laravel 5.1.15 (LTS) on 2015-09-03.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -5177,6 +5177,7 @@ namespace {
          * @param string $ability
          * @param callable|string $callback
          * @return $this 
+         * @throws \InvalidArgumentException
          * @static 
          */
         public static function define($ability, $callback){
@@ -5196,10 +5197,21 @@ namespace {
         }
         
         /**
+         * Register a callback to run before all Gate checks.
+         *
+         * @param callable $callback
+         * @return $this 
+         * @static 
+         */
+        public static function before($callback){
+            return \Illuminate\Auth\Access\Gate::before($callback);
+        }
+        
+        /**
          * Determine if the given ability should be granted for the current user.
          *
          * @param string $ability
-         * @param array|mixed $arguents
+         * @param array|mixed $arguments
          * @return bool 
          * @static 
          */
@@ -5211,7 +5223,7 @@ namespace {
          * Determine if the given ability should be denied for the current user.
          *
          * @param string $ability
-         * @param array|mixed $arguents
+         * @param array|mixed $arguments
          * @return bool 
          * @static 
          */
@@ -5223,7 +5235,7 @@ namespace {
          * Determine if the given ability should be granted for the current user.
          *
          * @param string $ability
-         * @param array|mixed $arguents
+         * @param array|mixed $arguments
          * @return bool 
          * @static 
          */
@@ -5255,7 +5267,7 @@ namespace {
         }
         
         /**
-         * Get a guard instance for the given uer.
+         * Get a guard instance for the given user.
          *
          * @param \Illuminate\Contracts\Auth\Authenticatable|mixed $user
          * @return static 
@@ -11729,6 +11741,16 @@ namespace {
          */
         public static function inject($section, $content){
             \Illuminate\View\Factory::inject($section, $content);
+        }
+        
+        /**
+         * Create mark for parent section content.
+         *
+         * @return void 
+         * @static 
+         */
+        public static function appendParent(){
+            \Illuminate\View\Factory::appendParent();
         }
         
         /**

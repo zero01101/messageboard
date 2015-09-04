@@ -8,7 +8,6 @@ class Message extends Model
 {
     protected $fillable = [
         'message',
-        'to',
         'author_ip'
     ];
 }
