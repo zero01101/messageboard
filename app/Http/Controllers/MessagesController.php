@@ -6,15 +6,41 @@ use App\Message;
 use App\Messageboard;
 use App\Http\Requests;
 use GuzzleHttp\Client;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class MessagesController extends Controller
 {
+
+    public function createNewBoard()
+    {
+        $title = $_POST['title'];
+        $ip = $_POST['ip'];
+        try{
+            $newBoard = Messageboard::create([
+                'title' => $title,
+                'creator_ip' => $ip
+            ]);
+            $id = $newBoard->id;
+        }
+        catch (QueryException $probablyAlreadyExists) {
+            $welp = Messageboard::all()
+                    ->where('title', $title);
+            foreach ($welp as $oh) {
+                $id = $oh->id;
+            }
+        }
+        return redirect('view/' . $id);
+    }
+
     public function postMessage($board_id = null)
     {
         $board_id == null ? $board_id = 1 : $board_id;
-        $messages = Message::latest('created_at')->where('board_id', $board_id)->limit(5)->get();
+        $messages = Message::latest('created_at')
+                            ->where('board_id', $board_id)
+                            ->limit(5)
+                            ->get();
         $ip = $_SERVER['REMOTE_ADDR'];
         return view('post')->with('ip', $ip)
                             ->with('messages', $messages)
@@ -34,13 +60,25 @@ class MessagesController extends Controller
         if ($msg == '/cat') {
             $msg = $this->_catFacts();
             if ($msg != false) {
-                Message::create(['message' => $msg, 'author_ip' => 'CatFacts', 'board_id' => $board_id]);
+                Message::create([
+                    'message' => $msg,
+                    'author_ip' => 'CatFacts',
+                    'board_id' => $board_id
+                ]);
             } else {
-                Message::create(['message' => 'grumpy cat says NO', 'author_ip' => 'CatFacts', 'board_id' => $board_id]);
+                Message::create([
+                    'message' => 'grumpy cat says NO',
+                    'author_ip' => 'CatFacts',
+                    'board_id' => $board_id
+                ]);
             }
         } else {
             if (!is_null($msg) && $msg != "") {
-                Message::create(['message' => $msg, 'author_ip' => $ip, 'board_id' => $board_id]);
+                Message::create([
+                    'message' => $msg,
+                    'author_ip' => $ip,
+                    'board_id' => $board_id
+                ]);
             }
         }
         return redirect('view/' . $board_id);
@@ -55,17 +93,23 @@ class MessagesController extends Controller
         $boards = Array();
         foreach ($boardsCollection as $board)
         {
-            $boards[] = ['id' => $board->id, 'title' => $board->title];
+            $boards[] = [
+                'id' => $board->id,
+                'title' => $board->title
+            ];
             if ($board->id == $board_id) {
                 $title = $board->title;
             }
         }
-        $messages = Message::latest('created_at')->where('board_id', $board_id)->limit(25)->get();
+        $messages = Message::latest('created_at')
+                            ->where('board_id', $board_id)
+                            ->limit(25)
+                            ->get();
         return view('view')->with('messages', $messages)
-            ->with('ip', $ip)
-            ->with('boards', $boards)
-            ->with('title', $title)
-            ->with('board_id', $board_id);
+                            ->with('ip', $ip)
+                            ->with('boards', $boards)
+                            ->with('title', $title)
+                            ->with('board_id', $board_id);
     }
 
     private function _catFacts()

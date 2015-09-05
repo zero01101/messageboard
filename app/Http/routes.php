@@ -17,6 +17,8 @@ Route::get('view', 'MessagesController@showMessages');
 
 Route::get('view/{board_id}', 'MessagesController@showMessages');
 
+Route::post('create', 'MessagesController@createNewBoard');
+
 Route::post('post', 'MessagesController@processPostMessage');
 
 Route::post('post/{board_id}', 'MessagesController@processPostMessage');
