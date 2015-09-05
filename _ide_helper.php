@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.1.15 (LTS) on 2015-09-03.
+ * Generated for Laravel 5.1.16 (LTS) on 2015-09-05.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -11741,16 +11741,6 @@ namespace {
          */
         public static function inject($section, $content){
             \Illuminate\View\Factory::inject($section, $content);
-        }
-        
-        /**
-         * Create mark for parent section content.
-         *
-         * @return void 
-         * @static 
-         */
-        public static function appendParent(){
-            \Illuminate\View\Factory::appendParent();
         }
         
         /**
