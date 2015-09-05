@@ -20,7 +20,16 @@
                             {!! Form::text('msg', null, ['class' => 'form-control', 'autofocus' => 'autofocus', 'id' => 'msgtxt']) !!}
                         </div>
                         <p/>
-                        <div>
+                        <div class="ui-widget form-control">
+                            posting to: <select id="combobox" name="board_id">
+                                @foreach($boards as $board)
+                                    <?php $selected = ' '?>
+                                    @if($board['id'] == $board_id)
+                                        <?php $selected = ' selected'?>
+                                    @endif
+                                    <option value="<?php echo $board['id']?>"{{ $selected }}><?php echo $board['title']?></option>
+                                @endforeach
+                            </select>
 
                         </div>
                         <p/>
@@ -32,7 +41,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
-                    {{--<button type="button" class="btn btn-primary form-control">post msg</button>--}}
                 </div>
             </div>
         </div>
@@ -79,21 +87,14 @@
         </message>
     @endforeach
     </div>
-    <a href="view?cf=yesplz" class="btn btn-default pull-right bottom" data-step="4" data-intro="...?????">&pi;</a>
 @stop
 @section('footer')
     <script>
         $('option').click(function(e) {
             document.location = "//<?php echo getenv('APP_HOST') . '/' . getenv('APP_PATH') . '/'?>view/" + this.value;
         });
-
-        function post() {
-            document.location = "//<?php echo getenv('APP_HOST') . '/' . getenv('APP_PATH') . '/'?>post/" + <?php echo $board_id ?>;
-        }
-
         $('#post_modal').on('shown.bs.modal', function () {
             $('#msgtxt').focus()
         })
-
     </script>
 @stop

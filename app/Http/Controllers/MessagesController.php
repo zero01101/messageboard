@@ -24,10 +24,24 @@ class MessagesController extends Controller
     public function processPostMessage()
     {
         $ip = $_POST['ip'];
-        $board_id = $_POST['_current_board'];
+        if ($_POST['_current_board'] == $_POST['board_id']) {
+            $board_id = $_POST['_current_board'];
+        } else {
+            $board_id = $_POST['board_id'];
+        };
+
         $msg = trim($_POST['msg']);
-        if (!is_null($msg) && $msg != "") {
-            Message::create(['message' => $msg, 'author_ip' => $ip, 'board_id' => $board_id]);
+        if ($msg == '/cat') {
+            $msg = $this->_catFacts();
+            if ($msg != false) {
+                Message::create(['message' => $msg, 'author_ip' => 'CatFacts', 'board_id' => $board_id]);
+            } else {
+                Message::create(['message' => 'grumpy cat says NO', 'author_ip' => 'CatFacts', 'board_id' => $board_id]);
+            }
+        } else {
+            if (!is_null($msg) && $msg != "") {
+                Message::create(['message' => $msg, 'author_ip' => $ip, 'board_id' => $board_id]);
+            }
         }
         return redirect('view/' . $board_id);
     }
@@ -47,24 +61,22 @@ class MessagesController extends Controller
             }
         }
         $messages = Message::latest('created_at')->where('board_id', $board_id)->limit(25)->get();
-        if ((!empty($_REQUEST)) && ($_REQUEST['cf'] == 'yesplz')) {
-            $request = new Client();
-            $response = $request->get('http://catfacts-api.appspot.com/api/facts?number=1');
-            $carfax = json_decode($response->getBody()->read(1000));
-            if ($carfax->success == true) {
-                Message::create(['message' => $carfax->facts['0'], 'author_ip' => 'CatFacts']);
-                return redirect('view')->with('messages', $messages)
-                                        ->with('ip', $ip)
-                                        ->with('boards', $boards)
-                                        ->with('title', $title)
-                                        ->with('board_id', $board_id);
-            }
+        return view('view')->with('messages', $messages)
+            ->with('ip', $ip)
+            ->with('boards', $boards)
+            ->with('title', $title)
+            ->with('board_id', $board_id);
+    }
+
+    private function _catFacts()
+    {
+        $request = new Client();
+        $response = $request->get('http://catfacts-api.appspot.com/api/facts?number=1');
+        $carfax = json_decode($response->getBody()->read(1000));
+        if ($carfax->success == true) {
+            return $carfax->facts['0'];
         } else {
-            return view('view')->with('messages', $messages)
-                ->with('ip', $ip)
-                ->with('boards', $boards)
-                ->with('title', $title)
-                ->with('board_id', $board_id);
+            return false;
         }
     }
 }
