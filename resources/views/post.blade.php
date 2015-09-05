@@ -2,7 +2,7 @@
 @section('content')
 {!! Form::open() !!}
 <input type="hidden" name="_current_board" value="{{ $board_id }}">
-<a href="//<?php echo getenv('APP_HOST') . '/' . getenv('APP_PATH') . '/'?>view" class="btn btn-default" data-step="1" data-intro="click this to go back to the messageboard without posting"><b><<</b></a>
+<a href="javascript:goback();" class="btn btn-default" data-step="1" data-intro="click this to go back to the messageboard without posting"><b><<</b></a>
 <a href="javascript:void(0);" class="btn btn-info" onclick="javascript:introJs().start();">?</a>
 <p data-step="2" data-intro="this is the IP address you're posting from; this also determines which posts are bolded">posting from {{ $ip }}</p>
 <div class="form-group">
@@ -40,4 +40,11 @@
         @endforeach
     </div>
 </div>
+@stop
+@section('footer')
+    <script>
+        function goback() {
+            document.location = "//<?php echo getenv('APP_HOST') . '/' . getenv('APP_PATH') . '/view/' . $board_id ?>";
+        }
+    </script>
 @stop
