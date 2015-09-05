@@ -2,11 +2,45 @@
 @section('content')
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <input type="hidden" name="_current_board" value="{{ $board_id }}">
+
+    <!-- Modal -->
+    <div class="modal fade" id="post_modal" tabindex="-1" role="dialog" aria-labelledby="post_modal_label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="post_modal_label">post new message</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        {!! Form::open(['url' => 'post', 'method' => 'post']) !!}
+                        {!! Form::hidden('ip', $ip) !!}
+                        {!! Form::hidden('_current_board', $board_id) !!}
+                        <div>
+                            {!! Form::text('msg', null, ['class' => 'form-control', 'autofocus' => 'autofocus', 'id' => 'msgtxt']) !!}
+                        </div>
+                        <p/>
+                        <div>
+
+                        </div>
+                        <p/>
+                        <div>
+                            {!! Form::submit('add msg', ['class' => 'btn btn-primary form-control']) !!}
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                    {{--<button type="button" class="btn btn-primary form-control">post msg</button>--}}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <br />
     <div class="control-group">
-        <a href="javascript:post();" class="btn btn-primary" data-step="1" data-intro="so, you click this button, it takes you to a form where you write a post...">
-            add new msg
-        </a>
+        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#post_modal" board_id="{{ $board_id }}"  data-step="1" data-intro="so, you click this button, it takes you to a form where you write a post...">add new msg</a>
         <a href="javascript:void(0);" class="btn btn-info" onclick="javascript:introJs().start();">?</a>
         <br />
         <br />
@@ -36,8 +70,7 @@
             ?>
         <message>
             <p>
-                <?php $detected_ip = $_SERVER['REMOTE_ADDR'] ?>
-                @if($message->author_ip == $detected_ip)
+                @if($message->author_ip == $ip)
                     <b>you</b> said (at {{ $message->created_at }}): <b>{!! $msg !!}</b>
                 @else
                     {{ $message->author_ip }} said (at {{ $message->created_at }}): {!! $msg !!}
@@ -57,6 +90,10 @@
         function post() {
             document.location = "//<?php echo getenv('APP_HOST') . '/' . getenv('APP_PATH') . '/'?>post/" + <?php echo $board_id ?>;
         }
+
+        $('#post_modal').on('shown.bs.modal', function () {
+            $('#msgtxt').focus()
+        })
 
     </script>
 @stop
