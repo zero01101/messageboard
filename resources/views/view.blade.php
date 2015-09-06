@@ -90,7 +90,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdown_messageboards">
                 @foreach($boards as $board)
-                    <li><option class="dropdownValue" value="<?php echo $board['id']?>"><?php echo $board['title']?></option></li>
+                    <li><option class="dropdownValue" value="{{ $board['id'] }}">{{ $board['title'] }}</option></li>
                 @endforeach
             </ul>
             <b>viewing: {{ $title }}</b>
@@ -121,7 +121,7 @@
 @stop
 @section('footer')
     <script>
-        $('option').click(function(e) {
+        $('.dropdownValue').click(function(e) {
             document.location = "//<?php echo getenv('APP_HOST') . '/' . getenv('APP_PATH') . '/'?>view/" + this.value;
         });
         $('#post_modal').on('shown.bs.modal', function () {
