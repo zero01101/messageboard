@@ -17,6 +17,7 @@ class MessagesController extends Controller
     {
         $title = $_POST['title'];
         $ip = $_POST['ip'];
+        $id = '';
         try{
             $newBoard = Messageboard::create([
                 'title' => $title,
@@ -73,7 +74,7 @@ class MessagesController extends Controller
                 ]);
             }
         } else {
-            if (!is_null($msg) && $msg != "") {
+            if (!is_null($msg) && trim($msg) != "") {
                 Message::create([
                     'message' => $msg,
                     'author_ip' => $ip,

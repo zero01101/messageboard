@@ -13,7 +13,8 @@ class SeedMsgboardsTable extends Seeder
     {
         DB::table('messageboards')->insert([
             1 => [
-                'title' => 'default'
+                'title' => 'default',
+                'creator_ip' => '127.0.0.1'
             ]
         ]);
     }

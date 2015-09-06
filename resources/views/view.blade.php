@@ -3,7 +3,7 @@
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <input type="hidden" name="_current_board" value="{{ $board_id }}">
 
-    <!-- Post Modal -->
+    <!-- Post Message Modal -->
     <div class="modal fade" id="post_modal" tabindex="-1" role="dialog" aria-labelledby="post_modal_label">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -97,7 +97,7 @@
         </div>
     </div>
     <br />
-    <div class="control-group" data-step="2" data-intro="...and they all show up here afterward! messages in bold are from posted from your current IP address.">
+    <div class="control-group well" data-step="2" data-intro="...and they all show up here afterward! messages in bold are from posted from your current IP address.">
     @foreach($messages as $message)
         <?php
             $testvar = $message->message;
