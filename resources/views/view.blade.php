@@ -8,7 +8,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="post_modal_label">post new message</h4>
                 </div>
                 <div class="modal-body">
@@ -29,10 +30,12 @@
 
                         </div>
                         <p/>
+
                         <div>
                             {!! Form::text('msg', null, ['class' => 'form-control', 'autofocus' => 'autofocus', 'id' => 'msgtxt']) !!}
                         </div>
                         <p/>
+
                         <div>
                             {!! Form::submit('add msg', ['class' => 'btn btn-primary form-control']) !!}
                         </div>
@@ -51,7 +54,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="board_modal_label">create new board</h4>
                 </div>
                 <div class="modal-body">
@@ -63,6 +67,7 @@
                                 {!! Form::text('title', null, ['class' => 'form-control', 'autofocus' => 'autofocus', 'id' => 'title']) !!}
                             </div>
                             <br/>
+
                             <div>
                                 {!! Form::submit('create board', ['class' => 'btn btn-primary form-control']) !!}
                             </div>
@@ -76,52 +81,61 @@
         </div>
     </div>
 
-    <br />
+    <br/>
     <div class="control-group">
-        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#post_modal" board_id="{{ $board_id }}" data-step="1" data-intro="so, you click this button, it takes you to a form where you write a post...">add new msg</a>
-        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#board_modal" data-step="4" data-intro="...and you can create a brand new messageboard with this button!">create new board</a>
+        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#post_modal" board_id="{{ $board_id }}"
+           data-step="1" data-intro="so, you click this button, it takes you to a form where you write a post...">add
+            new msg</a>
+        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#board_modal" data-step="4"
+           data-intro="...and you can create a brand new messageboard with this button!">create new board</a>
         <a href="javascript:void(0);" class="btn btn-info" onclick="javascript:introJs().start();">?</a>
-        <br />
-        <br />
+        <br/>
+        <br/>
+
         <div class="dropdown">
-            <a class="dropdown-toggle btn btn-default" type="button" id="dropdown_messageboards" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-step="3" data-intro="you can choose to view a specific messageboard with this list...">
+            <a class="dropdown-toggle btn btn-default" type="button" id="dropdown_messageboards" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false" data-step="3"
+               data-intro="you can choose to view a specific messageboard with this list...">
                 messageboards
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdown_messageboards">
                 @foreach($boards as $board)
-                    <li><option class="dropdownValue" value="{{ $board['id'] }}">{{ $board['title'] }}</option></li>
+                    <li>
+                        <option class="dropdownValue" value="{{ $board['id'] }}">{{ $board['title'] }}</option>
+                    </li>
                 @endforeach
             </ul>
             <b>viewing: {{ $title }}</b>
         </div>
     </div>
-    <br />
-    <div class="control-group well" data-step="2" data-intro="...and they all show up here afterward! messages in bold are from posted from your current IP address.">
-    @foreach($messages as $message)
-        <?php
+    <br/>
+    <div class="control-group well" data-step="2"
+         data-intro="...and they all show up here afterward! messages in bold are from posted from your current IP address.">
+        @foreach($messages as $message)
+            <?php
             $testvar = $message->message;
             if (filter_var($testvar, FILTER_VALIDATE_URL)) {
-                $msg = '<a href="' . $testvar . '">'. $testvar . '</a>';
+                $msg = '<a href="' . $testvar . '">' . $testvar . '</a>';
             } else {
                 $msg = $testvar;
             }
             ?>
-        <message>
-            <p>
-                @if($message->author_ip == $ip)
-                    <b>you</b> said (at {{ $message->created_at }}): <b>{!! $msg !!}</b>
-                @else
-                    {{ $message->author_ip }} said (at {{ $message->created_at }}): {!! $msg !!}
-                @endif
-            </p>
-        </message>
-    @endforeach
+            <message>
+                <p>
+                    @if($message->author_ip == $ip)
+                        <b>you</b> said (at {{ $message->created_at }}): <b>{!! $msg !!}</b>
+                    @else
+                        {{ $message->author_ip }} said (at {{ $message->created_at }}): {!! $msg !!}
+                    @endif
+                </p>
+            </message>
+        @endforeach
     </div>
 @stop
 @section('footer')
     <script>
-        $('.dropdownValue').click(function(e) {
+        $('.dropdownValue').click(function (e) {
             document.location = "//<?php echo getenv('APP_HOST') . '/' . getenv('APP_PATH') . '/'?>view/" + this.value;
         });
         $('#post_modal').on('shown.bs.modal', function () {
